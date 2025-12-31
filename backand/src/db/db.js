@@ -1,7 +1,7 @@
 const mongose = require('mongoose');
 
 function connectDB(){
-    mongose.connect('mongodb://localhost:27017/instzomdb')
+    mongose.connect(process.env.mongoURI)
      .then(()=>{
         console.log('DataBase Connected');
     }).catch((err)=>{

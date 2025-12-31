@@ -1,45 +1,194 @@
 const userModel  = require('../models/user.model');
+const foodpatnermodel = require('../models/foodpatner.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+async function registerUser(req, res) {
+  try {
+    const { fullName, email, password } = req.body;
 
-async function registerUser(req, res){
-    try{
-        const {fullName, email, password} = req.body;
-        const existingUser = await userModel.findOne({email});
-        if(existingUser){
-            return res.status(400).json({message: 'User already exists'});
-        }
-        const hashedPassword = await bcrypt.hash(password, 10); 
-         const user = new userModel.create(
-            {
-            fullName,
-            email, 
-            password: hashedPassword
-           }
-        );
-        // In real application, hash the password before saving
-        const newUser = new userModel({fullName, email, hashedPassword});
-        await newUser.save();
-        res.status(201).json({message: 'User registered successfully'});
-    }catch(err){
-        res.status(500).json({message: 'Server Error', error: err.message});
+    // Check if user already exists
+    const existingUser = await userModel.findOne({ email });
+    if (existingUser) {
+      return res.status(400).json({ message: 'User already exists' });
     }
 
-    const token = jwt.sign({
-        userId: newUser._id
-    }, "2a62b705891f2aae9d9585abc5010e9e8069fa90");
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-    res.cookie('token', token);
+    // Create and save new user
+    const newUser = new userModel({
+      fullName,
+      email,
+      password: hashedPassword
+    });
+    await newUser.save();
 
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: newUser._id },
+      process.env.JWT_SECRET
+    );
+
+    // Send response
+    res.cookie('token', token, { httpOnly: true });
     res.status(201).json({
-        message: 'User registered successfully', token,
-        User:{
-            id: newUser._id,
-            fullName: newUser.fullName,
-            email: newUser.email
+      message: 'User registered successfully',
+      token,
+      user: {
+        id: newUser._id,
+        fullName: newUser.fullName,
+        email: newUser.email
+      }
+    });
+
+  } catch (err) {
+    res.status(500).json({ message: 'Server Error', error: err.message });
+  }
+}
+
+async function loginUser(req, res) {
+  
+    const {email,password} = req.body;
+    try{
+        const user = await userModel.findOne({
+            email
+        })
+        if(!user){
+            return res.status(400).json({
+                message:"Invalid credentials"
+            })
         }
+
+        const isMatch = await bcrypt.compare(password,user.password);
+        if(!isMatch){
+            return res.status(400).json({
+                message:"Invalid credentials"
+            })
+        }
+        const token = jwt.sign(
+            { userId: user._id },
+             process.env.JWT_SECRET,
+          );
+          res.cookie('token', token);
+           res.status(200).json({
+            message:"Login successful",
+            token,
+            user:{
+                id:user._id,
+                fullName:user.fullName,
+                email:user.email
+            }
+          });
+    }
+    catch(err){
+        res.status(500).json({
+            message:"Server error",
+            error:err.message
+        })
+    }
+}
+
+function logoutUser(req, res) {
+    res.clearCookie('token');
+    res.status(200).json({
+        message:"Logout successful"
     });
 }
 
-module.exports = {registerUser};
+async function registerfoodpanter(req, res) {
+
+    const {name,email,password}= req.body;
+    try{
+        const isexist = await foodpatnermodel.findOne({ email });
+        if(isexist){
+            return res.status(400).json({
+                message:"Food patner already exist"
+            })
+        }
+        const hashedPassword = await bcrypt.hash(password,10);
+        const newfoodpatner = awaitfoodpatnermodel.create({
+            name,
+            email,
+            password:hashedPassword
+        });
+        
+        const token = jwt.sign(
+            { foodpatnerId: newfoodpatner._id },
+             process.env.JWT_SECRET,        
+            );
+        res.cookie('token', token);
+        res.status(201).json({
+            message:"Food patner registered successfully",
+            token,  
+            foodpatner:{
+                id:newfoodpatner._id,
+                name:newfoodpatner.name,
+                email:newfoodpatner.email
+            }      
+        }); 
+    }
+    catch(err){
+        res.status(500).json({
+            message:"Server error",
+            error:err.message
+        })
+    }
+}
+
+async function loginfoodpatner(req, res) {
+  
+    const {email,password} = req.body;
+    try{
+        const foodpatner = await foodpatnermodel.findOne({
+            email
+        })
+        if(!foodpatner){
+            return res.status(400).json({
+                message:"Invalid credentials"
+            })
+        }
+        const isMatch = await bcrypt.compare(password,foodpatner.password);
+        if(!isMatch){
+            return res.status(400).json({
+                message:"Invalid credentials"
+            })
+        }
+        const token = jwt.sign(
+            { foodpatnerId: foodpatner._id },
+                process.env.JWT_SECRET, 
+            );
+            res.cookie('token', token);
+
+              res.status(200).json({
+            message:"Login successful",
+            token,
+            foodpatner:{
+                id:foodpatner._id,
+                name:foodpatner.name,
+                email:foodpatner.email
+            }
+          });
+      }  catch(err){
+        res.status(500).json({
+            message:"Server error",
+            error:err.message
+        })
+    }
+ } 
+
+ function logoutfoodpatner(req,res){
+    res.clearCookie('token');
+    res.status(200).json({
+        message:"logout successful"
+    })
+
+ }
+module.exports = { 
+    registerUser, 
+    loginUser ,
+    logoutUser, 
+    registerfoodpanter, 
+    loginfoodpatner,
+    logoutfoodpatner
+};
