@@ -5,7 +5,7 @@ const foodSchema = new mongoose.Schema({
         type:String,
         required:true
     },
-    Vedio:{
+    Video:{
         type:String,
         required:true
     },
