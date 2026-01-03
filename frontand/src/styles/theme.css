@@ -1,0 +1,31 @@
+/* src/theme.css */
+:root {
+  /* Common variables */
+  --font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --transition-speed: 0.3s;
+  --radius: 8px;
+  --primary-color: #007bff; /* Standard Blue */
+  --primary-hover: #0056b3;
+
+  /* Light Mode Defaults */
+  --bg-color: #f4f6f8;
+  --card-bg: #ffffff;
+  --text-main: #1a1a1a;
+  --text-muted: #666666;
+  --input-bg: #ffffff;
+  --border-color: #e1e4e8;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Mode Overrides (Auto-detected) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-color: #0d1117;
+    --card-bg: #161b22;
+    --text-main: #e6edf3;
+    --text-muted: #8b949e;
+    --input-bg: #0d1117;
+    --border-color: #30363d;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+}
