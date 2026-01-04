@@ -1,0 +1,77 @@
+/* The Main Container: Full Screen & Scroll Snapping */
+.reels-container {
+  height: 100vh; /* Takes full height of the screen */
+  width: 100%;
+  overflow-y: scroll; /* Allow vertical scrolling */
+  scroll-snap-type: y mandatory; /* The magic property for snapping */
+  background-color: black;
+}
+
+/* Hide scrollbar for a clean look */
+.reels-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Individual Reel Card */
+.reel-card {
+  height: 100vh;
+  width: 100%;
+  scroll-snap-align: start; /* Locks the top of this card to the screen */
+  position: relative; /* So we can put text on top of it */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* The Video Player */
+.reel-video {
+  height: 100%;
+  width: 100%;
+  object-fit: cover; /* Ensures video fills screen without stretching */
+}
+
+/* The Dark Gradient Overlay (Makes text readable) */
+.reel-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%; /* Only covers bottom part */
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Push content to bottom */
+  align-items: flex-start;
+  box-sizing: border-box;
+}
+
+/* Truncated Description (Max 2 lines) */
+.reel-description {
+  color: white;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  
+  /* CSS Magic for 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  
+  max-width: 80%; /* Don't stretch too wide */
+}
+
+/* Visit Store Button */
+.visit-store-btn {
+  background-color: #ff3e6c; /* Typical food app color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+}

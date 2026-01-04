@@ -32,8 +32,9 @@ const AuthForm = ({
     try {
       // 2. Send the Request
       // axios.post(URL, DATA)
-      const response = await axios.post(apiEndpoint, formData);
-
+      const response = await axios.post(apiEndpoint, formData, 
+        { withCredentials: true}
+      );
       // 3. Success (Axios only reaches here if status is 200/201)
       alert("Success: " + response.data.message);
       

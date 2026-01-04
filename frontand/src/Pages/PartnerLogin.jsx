@@ -7,10 +7,11 @@ const PartnerLogin = () => {
       title="Partner Portal"
       subtitle="Login to manage restaurant"
       isRegister={false}
-      togglePath="/foodpartner/register"
+      togglePath="/create-food"
       // New Switch Links
       switchPortalPath="/user/login"
       switchPortalText="Looking to order food?"
+      apiEndpoint="http://localhost:3000/api/auth/foodpartner/login"
     />
   );
 };

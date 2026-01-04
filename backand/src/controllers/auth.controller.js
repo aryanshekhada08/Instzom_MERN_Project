@@ -107,7 +107,7 @@ async function registerfoodpanter(req, res) {
             })
         }
         const hashedPassword = await bcrypt.hash(password,10);
-        const newfoodpatner = awaitfoodpatnermodel.create({
+        const newfoodpatner = await foodpatnermodel.create({
             name,
             email,
             password:hashedPassword
@@ -184,11 +184,30 @@ async function loginfoodpatner(req, res) {
     })
 
  }
+
+
+// const logout = (req, res) => {
+//   try {
+//     // Clear the cookie named 'token' (or whatever you named it in Login)
+//     res.clearCookie('token', {
+//       httpOnly: true,
+//       sameSite: 'strict', // Must match how you set the cookie
+//       secure: false       // Set to true if using HTTPS
+//     });
+
+//     res.status(200).json({ message: "Logged out successfully" });
+//   } catch (error) {
+//     res.status(500).json({ error: "Logout failed" });
+//   }
+// };
+
+
 module.exports = { 
     registerUser, 
     loginUser ,
     logoutUser, 
     registerfoodpanter, 
     loginfoodpatner,
-    logoutfoodpatner
+    logoutfoodpatner,
+    //logout
 };

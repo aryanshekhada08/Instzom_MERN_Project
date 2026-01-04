@@ -7,7 +7,7 @@ const UserLogin = () => {
       title="Welcome Back"
       subtitle="Login to order food"
       isRegister={false}
-      togglePath="/user/register"
+      togglePath="/"
       // New Switch Links
       switchPortalPath="/foodpartner/login"
       switchPortalText="Are you a Restaurant Partner?"
