@@ -1,6 +1,7 @@
-import React, { useState } from 'react'; // 1. Import useState
-import { Link } from 'react-router-dom';
-import '../App.css'; // Import the CSS file for styling
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // <--- 1. Import Axios here
+import '../App.css';
 
 const AuthForm = ({ 
   title, 
@@ -8,60 +9,72 @@ const AuthForm = ({
   isRegister, 
   togglePath, 
   switchPortalPath, 
-  switchPortalText 
+  switchPortalText,
+  apiEndpoint 
 }) => {
   
-  // 2. Create the "State" to hold the data
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
     password: ''
   });
 
-  // 3. Create a function to handle typing
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,    // Keep existing data (like email) while typing password
-      [name]: value   // Update only the field being typed
-    }));
+    setFormData({ ...formData, [name]: value });
   };
 
-  // 4. Create a function to handle the Button Click
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevents the page from refreshing
-    
-    // FOR NOW: We just print the data to see if it works
-    console.log("Form Submitted:", formData); 
-    
-    // LATER: We will send this 'formData' to your Node backend here
-    if (isRegister) {
-       console.log("Sending Register request...");
-    } else {
-       console.log("Sending Login request...");
+  // --- THE NEW AXIOS SUBMIT FUNCTION ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      // 2. Send the Request
+      // axios.post(URL, DATA)
+      const response = await axios.post(apiEndpoint, formData);
+
+      // 3. Success (Axios only reaches here if status is 200/201)
+      alert("Success: " + response.data.message);
+      
+      // Redirect to login
+      navigate(togglePath);
+
+    } catch (error) {
+      // 4. Failure (Axios jumps here if status is 400/500)
+      if (error.response) {
+        // The server responded with a specific error message (e.g., "Email already exists")
+        alert("Error: " + error.response.data.error);
+      } else if (error.request) {
+        // The request was made but no response (Server is offline)
+        alert("Server is not responding. Is it running?");
+      } else {
+        // Something else happened
+        alert("Error: " + error.message);
+      }
+      console.error("Axios Error:", error);
     }
   };
 
   return (
     <div className="auth-container">
+      {/* ... (The rest of your JSX code remains exactly the same) ... */}
       <div className="auth-header">
         <h2>{title}</h2>
         <p>{subtitle}</p>
       </div>
 
-      {/* 5. Connect the handleSubmit to the form */}
       <form onSubmit={handleSubmit}>
-        
         {isRegister && (
           <div className="form-group">
             <label className="form-label">Full Name</label>
             <input 
               type="text" 
-              name="fullName"      // Must match state key
+              name="fullName" 
               value={formData.fullName} 
               onChange={handleChange} 
               className="form-input" 
-              placeholder="e.g. John Doe" 
+              required // Add HTML5 validation
             />
           </div>
         )}
@@ -69,33 +82,32 @@ const AuthForm = ({
         <div className="form-group">
           <label className="form-label">Email Address</label>
           <input 
-            type="email" 
-            name="email"           // Must match state key
-            value={formData.email}
-            onChange={handleChange}
-            className="form-input" 
-            placeholder="name@example.com" 
+             type="email" 
+             name="email" 
+             value={formData.email} 
+             onChange={handleChange} 
+             className="form-input" 
+             required 
           />
         </div>
 
         <div className="form-group">
           <label className="form-label">Password</label>
           <input 
-            type="password" 
-            name="password"        // Must match state key
-            value={formData.password}
-            onChange={handleChange}
-            className="form-input" 
-            placeholder="••••••••" 
+             type="password" 
+             name="password" 
+             value={formData.password} 
+             onChange={handleChange} 
+             className="form-input" 
+             required 
           />
         </div>
 
-        {/* Change type="button" to type="submit" */}
         <button type="submit" className="btn-submit">
           {isRegister ? 'Create Account' : 'Sign In'}
         </button>
       </form>
-
+      
       <div className="auth-footer">
         {isRegister ? "Already have an account?" : "Don't have an account?"}
         <Link to={togglePath} className="auth-link">
@@ -103,13 +115,7 @@ const AuthForm = ({
         </Link>
       </div>
 
-      <div style={{ 
-          marginTop: '20px', 
-          paddingTop: '15px', 
-          borderTop: '1px solid var(--border-color)', 
-          textAlign: 'center',
-          fontSize: '0.85rem'
-        }}>
+      <div style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid var(--border-color)', textAlign: 'center', fontSize: '0.85rem' }}>
         <Link to={switchPortalPath} style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
           {switchPortalText} <strong>Click here &rarr;</strong>
         </Link>

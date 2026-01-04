@@ -11,6 +11,7 @@ const UserRegister = () => {
       togglePath="/user/login"
       switchPortalPath="/foodpartner/register"
       switchPortalText="Are you a Restaurant Partner?"
+      apiEndpoint="http://localhost:3000/api/auth/user/register"
     />
   );
 };

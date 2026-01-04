@@ -11,6 +11,7 @@ const UserLogin = () => {
       // New Switch Links
       switchPortalPath="/foodpartner/login"
       switchPortalText="Are you a Restaurant Partner?"
+      apiEndpoint="http://localhost:3000/api/auth/user/login"
     />
   );
 };
