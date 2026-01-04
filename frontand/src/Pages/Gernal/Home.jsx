@@ -8,25 +8,37 @@ const Home = () => {
   const [realsData, setRealsData] = useState([]);
 
   // 3. Use useEffect to fetch data automatically when page opens
-  useEffect(() => {
-    const fetchReels = async () => {
-      try {
-        // Call your Backend
-        const response = await axios.get(
-          'http://localhost:3000/api/food',
-          { withCredentials: true } 
-        );
+  // src/Pages/Gernal/Home.jsx
 
-        // Save the data into the state
+// src/Pages/Gernal/Home.jsx
+
+useEffect(() => {
+  const fetchReels = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/api/food');
+      
+      console.log("SERVER RESPONSE:", response.data); 
+
+      // 👇 FIX: Check for 'foods' (Plural)
+      if (response.data.foods && Array.isArray(response.data.foods)) {
+        setRealsData(response.data.foods); // ✅ Correct!
+      } 
+      // Fallback: Check if it's just the array directly
+      else if (Array.isArray(response.data)) {
         setRealsData(response.data);
-        console.log("Data loaded:", response.data);
-      } catch (error) {
-        console.error("Error loading reels:", error);
       }
-    };
+      else {
+        console.error("Could not find the food list!", response.data);
+        setRealsData([]); 
+      }
 
-    fetchReels(); // Run the function
-  }, []); // [] means "run only once on mount"
+    } catch (error) {
+      console.error("Error loading reels:", error);
+    }
+  };
+
+  fetchReels();
+}, []);
 
     return (
     <div className="reels-container">

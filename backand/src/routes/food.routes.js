@@ -10,7 +10,7 @@ const upload = muilter({
 router.post('/', authmidell.authfoodpatnermidellware,upload.single("video"), foodController.createfood);
 
 // router.get('/', authmidell.authusermidellware,foodController.getallfood);
-router.get('/', authmidell.authusermidellware, foodController.getallfood);
+router.get('/',  foodController.getallfood);
 
 
 
