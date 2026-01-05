@@ -58,9 +58,9 @@
   line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  text-overflow: ellipsis;
+  text-overflow: ellipsis; 
   
-  max-width: 80%; /* Don't stretch too wide */
+  max-width: 80%; /* Don't stretch too wide  in  this  way to used */
 }
 
 /* Visit Store Button */
