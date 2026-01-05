@@ -1,0 +1,160 @@
+/* src/styles/Profile.css */
+
+.profile-page {
+  background-color: var(--bg-color);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* Aligns card to top */
+  padding: 20px;
+}
+
+.profile-card {
+  width: 100%;
+  max-width: 400px; /* Mobile width */
+  background-color: var(--card-bg); /* Uses your theme white/dark */
+  border-radius: 20px; /* Rounded corners like the image */
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Header Layout (Avatar Left, Buttons Right) --- */
+.profile-header-section {
+  display: flex;
+  align-items: center; /* Center vertically */
+  justify-content: space-between;
+  padding: 25px 20px;
+  background-color: var(--card-bg); 
+}
+
+/* The Circle */
+.avatar-container {
+  flex: 0 0 auto;
+  margin-right: 15px;
+}
+
+.avatar-circle {
+  width: 80px;
+  height: 80px;
+  background-color: var(--primary-color); /* Green/Blue from theme */
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  border: 4px solid rgba(0,0,0,0.05);
+}
+
+/* The Right Side Buttons */
+.info-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1; /* Takes remaining space */
+  align-items: flex-end; /* Pushes buttons to the right */
+}
+
+.info-badge {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 8px 15px;
+  border-radius: 8px; /* Rounded rectangle buttons */
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  max-width: 180px; /* Limits width so they don't stretch too much */
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* --- Stats Row --- */
+.stats-row {
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0 20px 0;
+  text-align: center;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stat-label {
+  font-size: 14px;
+  color: var(--text-muted);
+  text-transform: capitalize;
+}
+
+.stat-number {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text-main);
+}
+
+/* --- Divider --- */
+.section-divider {
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 0 15px 5px 15px; /* Spacing before grid */
+}
+
+/* --- Instagram Grid Layout --- */
+.instagram-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* EXACTLY 3 Columns */
+  gap: 2px; /* Tiny gap like Instagram */
+  background-color: var(--bg-color); /* Shows gap color */
+  border-top: 1px solid var(--border-color);
+}
+
+.grid-box {
+  background-color: var(--primary-color); /* Blue placeholders like image */
+  aspect-ratio: 9 / 16; /* Vertical Reel Shape */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.placeholder-text {
+  color: rgba(255,255,255,0.7);
+  font-size: 14px;
+}
+
+.grid-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.play-overlay {
+  position: absolute;
+  color: white;
+  font-size: 20px;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+}
+
+/* Modal styles stay same as before... */
+.video-modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.9); z-index: 1000;
+  display: flex; justify-content: center; align-items: center;
+}
+.video-modal-content {
+  background: var(--card-bg); width: 90%; max-width: 350px;
+  border-radius: 12px; overflow: hidden; position: relative;
+}
+.close-btn {
+  position: absolute; top: 10px; right: 15px; background: none; border: none;
+  color: white; font-size: 30px; cursor: pointer; z-index: 10;
+}
+.full-video { width: 100%; max-height: 70vh; background: black; }
+.modal-info { padding: 15px; color: var(--text-main); }

@@ -98,7 +98,7 @@ function logoutUser(req, res) {
 
 async function registerfoodpanter(req, res) {
 
-    const {name,email,password}= req.body;
+    const {name, email, password, address}= req.body;
     try{
         const isexist = await foodpatnermodel.findOne({ email });
         if(isexist){
@@ -110,8 +110,10 @@ async function registerfoodpanter(req, res) {
         const newfoodpatner = await foodpatnermodel.create({
             name,
             email,
-            password:hashedPassword
+            password:hashedPassword,
+            address: address || "Gujarat, India" // Save the address!
         });
+
         
         const token = jwt.sign(
             { foodpatnerId: newfoodpatner._id },

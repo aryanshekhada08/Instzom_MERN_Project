@@ -1,18 +1,22 @@
 import React from 'react';
 import AuthForm from '../components/AuthForm';
 
-const PartnerRegister = () => {
+const FoodPartnerRegister = () => {
   return (
     <AuthForm 
-      title="Become a Partner"
-      subtitle="Register your restaurant"
+      title="Partner Registration"
+      subtitle="Grow your business with us"
       isRegister={true}
-      togglePath="create-food"
+      
+      // 👇 THIS TURNS ON THE ADDRESS BOX
+      isPartner={true} 
+      
+      togglePath="/foodpartner/login"
       switchPortalPath="/user/register"
       switchPortalText="Looking to order food?"
       apiEndpoint="http://localhost:3000/api/auth/foodpartner/register"
-
     />
   );
 };
-export default PartnerRegister;
+
+export default FoodPartnerRegister;
