@@ -47,7 +47,7 @@ const AuthForm = ({
       alert("Success: " + (response.data.message || "Welcome!"));
       
       // 3. Redirect
-      // If it was a Login, go to Home or Dashboard
+      // If it was a Login, go to Home or Dashboard od Partner
       if (!isRegister) {
          navigate(isPartner ? '/foodpartner/dashboard' : '/');
       } else {
