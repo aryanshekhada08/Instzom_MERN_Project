@@ -42,7 +42,7 @@ const Profile = () => {
 
       } catch (error) {
         console.error("Error fetching data:", error);
-        // If error, we can leave the state as is or show an error message
+      
         setLoading(false);
       }
     };
