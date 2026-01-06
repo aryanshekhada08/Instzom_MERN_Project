@@ -1,6 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const VideoReel = ({ videoSrc, description, shopName }) => {
+const VideoReel = ({ videoSrc, shopId, description, shopName }) => {
+  // 👇 MOVED INSIDE THE COMPONENT
+  const navigate = useNavigate();
+
+  const handleVisitStore = () => {
+    // Navigate to a dynamic URL using the ID
+    navigate(`/profile/${shopId}`); 
+  };
+
   return (
     <div className="reel-card">
       {/* The Video */}
@@ -9,8 +18,8 @@ const VideoReel = ({ videoSrc, description, shopName }) => {
         src={videoSrc}
         loop 
         muted 
-        autoPlay // Simple autoplay (Advanced: use IntersectionObserver)
-        playsInline // Required for mobile
+        autoPlay 
+        playsInline 
       />
 
       {/* The UI Overlay */}
@@ -22,8 +31,8 @@ const VideoReel = ({ videoSrc, description, shopName }) => {
         </p>
 
         {/* 2. Visit Store Button */}
-        <button className="visit-store-btn" onClick={() => alert("Redirecting to " + shopName)}>
-          Visit Store &rarr;
+        <button className="visit-store-btn" onClick={handleVisitStore}>
+           Visit Store &rarr;
         </button>
       </div>
     </div>

@@ -3,15 +3,26 @@ import AuthForm from '../components/AuthForm';
 
 const UserLogin = () => {
   return (
-    <AuthForm 
+    // <AuthForm 
+    //   title="Welcome Back"
+    //   subtitle="Login to order food"
+    //   isRegister={false}
+    //   togglePath="/user/login"
+    //   // New Switch Links
+    //   switchPortalPath="/foodpartner/login"
+    //   switchPortalText="Are you a Restaurant Partner?"
+    //   apiEndpoint="http://localhost:3000/api/auth/user/login"
+    // />
+      <AuthForm 
       title="Welcome Back"
       subtitle="Login to order food"
       isRegister={false}
-      togglePath="/"
+      togglePath="/user/register"
       // New Switch Links
       switchPortalPath="/foodpartner/login"
       switchPortalText="Are you a Restaurant Partner?"
       apiEndpoint="http://localhost:3000/api/auth/user/login"
+
     />
   );
 };

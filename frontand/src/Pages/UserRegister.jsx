@@ -7,7 +7,8 @@ const UserRegister = () => {
       title="Create Account"
       subtitle="Sign up to order food"
       isRegister={true}
-      togglePath="/"
+      togglePath="/user/login"
+      isPartner={false}
       switchPortalPath="/foodpartner/register"
       switchPortalText="Are you a Restaurant Partner?"
       apiEndpoint="http://localhost:3000/api/auth/user/register"

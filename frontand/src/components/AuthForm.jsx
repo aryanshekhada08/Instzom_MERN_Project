@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // <--- 1. Import Axios here
-import '../App.css';
+import axios from 'axios';
+import '../App.css'; // Ensure this matches your CSS file location
 
 const AuthForm = ({ 
   title, 
   subtitle, 
   isRegister, 
+  isPartner = false, // Default is false (User mode)
   togglePath, 
   switchPortalPath, 
   switchPortalText,
@@ -14,112 +15,139 @@ const AuthForm = ({
 }) => {
   
   const navigate = useNavigate();
+  
+  // State matches your MongoDB Model fields exactly
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',       // Backend expects 'name' (not fullName)
     email: '',
-    password: ''
+    password: '',
+    address: ''     // Backend expects 'address' (only for partners)
   });
 
+  const [error, setError] = useState('');
+
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // --- THE NEW AXIOS SUBMIT FUNCTION ---
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(''); // Clear previous errors
 
     try {
-      // 2. Send the Request
-      // axios.post(URL, DATA)
-      const response = await axios.post(apiEndpoint, formData, 
-        { withCredentials: true}
-      );
-      // 3. Success (Axios only reaches here if status is 200/201)
-      alert("Success: " + response.data.message);
-      
-      // Redirect to login
-      navigate(togglePath);
+      // 1. Send Data
+      const response = await axios.post(apiEndpoint, formData, {
+        withCredentials: true
+      });
+      if (response.data.user) {
+    localStorage.setItem("userProfile", JSON.stringify(response.data.user));
+}
 
-    } catch (error) {
-      // 4. Failure (Axios jumps here if status is 400/500)
-      if (error.response) {
-        // The server responded with a specific error message (e.g., "Email already exists")
-        alert("Error: " + error.response.data.error);
-      } else if (error.request) {
-        // The request was made but no response (Server is offline)
-        alert("Server is not responding. Is it running?");
+      // 2. Success
+      alert("Success: " + (response.data.message || "Welcome!"));
+      
+      // 3. Redirect
+      // If it was a Login, go to Home or Dashboard
+      if (!isRegister) {
+         navigate(isPartner ? '/foodpartner/dashboard' : '/');
       } else {
-        // Something else happened
-        alert("Error: " + error.message);
+         // If Register, go to Login page
+         navigate(togglePath);
       }
-      console.error("Axios Error:", error);
+
+    } catch (err) {
+      // 4. Handle Errors
+      const msg = err.response?.data?.error || "Server Error";
+      setError(msg);
+      console.error("Auth Error:", err);
     }
   };
 
   return (
     <div className="auth-container">
-      {/* ... (The rest of your JSX code remains exactly the same) ... */}
-      <div className="auth-header">
+      <div className="auth-card">
         <h2>{title}</h2>
-        <p>{subtitle}</p>
-      </div>
+        <p className="subtitle">{subtitle}</p>
 
-      <form onSubmit={handleSubmit}>
-        {isRegister && (
+        {error && <div className="error-msg">{error}</div>}
+
+        <form onSubmit={handleSubmit}>
+          
+          {/* NAME FIELD (Only for Register) */}
+          {isRegister && (
+            <div className="form-group">
+              <label className="form-label">
+                {isPartner ? "Business Name" : "Full Name"}
+              </label>
+              <input 
+                type="text" 
+                name="name" 
+                value={formData.name} 
+                onChange={handleChange} 
+                placeholder={isPartner ? "Pizza Palace" : "John Doe"}
+                required 
+              />
+            </div>
+          )}
+
+          {/* EMAIL FIELD */}
           <div className="form-group">
-            <label className="form-label">Full Name</label>
+            <label className="form-label">Email Address</label>
             <input 
-              type="text" 
-              name="fullName" 
-              value={formData.fullName} 
-              onChange={handleChange} 
-              className="form-input" 
-              required // Add HTML5 validation
+               type="email" 
+               name="email" 
+               value={formData.email} 
+               onChange={handleChange} 
+               required 
             />
           </div>
-        )}
 
-        <div className="form-group">
-          <label className="form-label">Email Address</label>
-          <input 
-             type="email" 
-             name="email" 
-             value={formData.email} 
-             onChange={handleChange} 
-             className="form-input" 
-             required 
-          />
+          {/* ADDRESS FIELD (Only for Partner Registration) */}
+          {isRegister && isPartner && (
+            <div className="form-group">
+              <label className="form-label">Business Address</label>
+              <input 
+                type="text" 
+                name="address" 
+                value={formData.address} 
+                onChange={handleChange} 
+                placeholder="Rajkot, Gujarat"
+                required 
+              />
+            </div>
+          )}
+
+          {/* PASSWORD FIELD */}
+          <div className="form-group">
+            <label className="form-label">Password</label>
+            <input 
+               type="password" 
+               name="password" 
+               value={formData.password} 
+               onChange={handleChange} 
+               required 
+            />
+          </div>
+
+          <button type="submit" className="auth-btn">
+            {isRegister ? 'Create Account' : 'Sign In'}
+          </button>
+        </form>
+        
+        {/* FOOTER LINKS */}
+        <div className="auth-footer">
+          {isRegister ? "Already have an account?" : "Don't have an account?"}
+          <Link to={togglePath}>
+            {isRegister ? ' Log in' : ' Sign up'}
+          </Link>
         </div>
 
-        <div className="form-group">
-          <label className="form-label">Password</label>
-          <input 
-             type="password" 
-             name="password" 
-             value={formData.password} 
-             onChange={handleChange} 
-             className="form-input" 
-             required 
-          />
+        <div className="switch-portal">
+          <Link to={switchPortalPath}>
+            {switchPortalText} <strong>Click here &rarr;</strong>
+          </Link>
         </div>
 
-        <button type="submit" className="btn-submit">
-          {isRegister ? 'Create Account' : 'Sign In'}
-        </button>
-      </form>
-      
-      <div className="auth-footer">
-        {isRegister ? "Already have an account?" : "Don't have an account?"}
-        <Link to={togglePath} className="auth-link">
-          {isRegister ? 'Log in' : 'Sign up'}
-        </Link>
-      </div>
-
-      <div style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid var(--border-color)', textAlign: 'center', fontSize: '0.85rem' }}>
-        <Link to={switchPortalPath} style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>
-          {switchPortalText} <strong>Click here &rarr;</strong>
-        </Link>
       </div>
     </div>
   );

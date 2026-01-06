@@ -57,6 +57,7 @@ function AppRoutes() {
         <Route path="/foodpartner/register" element={<PartnerRegister />} />
         <Route path="/create-food" element={<CreateFoodPatner />} />
         <Route path="/foodpartner/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </Router>
   );

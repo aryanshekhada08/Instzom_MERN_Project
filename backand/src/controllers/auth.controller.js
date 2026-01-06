@@ -186,6 +186,20 @@ async function loginfoodpatner(req, res) {
     })
 
  }
+ const getProfile = async (req, res) => {
+  try {
+    // req.user.id comes from the cookie/token
+    const user = await foodpatnermodel.findById(req.user.id).select("-password");
+    
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ error: "Server Error" });
+  }
+};
 
 
 // const logout = (req, res) => {
@@ -211,5 +225,6 @@ module.exports = {
     registerfoodpanter, 
     loginfoodpatner,
     logoutfoodpatner,
+    getProfile,
     //logout
 };

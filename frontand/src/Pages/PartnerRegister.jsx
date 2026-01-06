@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthForm from '../components/AuthForm';
+import AuthForm from "../components/AuthForm"; 
 
 const FoodPartnerRegister = () => {
   return (
@@ -8,7 +8,7 @@ const FoodPartnerRegister = () => {
       subtitle="Grow your business with us"
       isRegister={true}
       
-      // 👇 THIS TURNS ON THE ADDRESS BOX
+      // 👇 This turns on "Business Name" and "Address" box
       isPartner={true} 
       
       togglePath="/foodpartner/login"
