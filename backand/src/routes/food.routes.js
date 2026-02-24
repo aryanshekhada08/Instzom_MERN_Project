@@ -11,6 +11,7 @@ router.post('/', authmidell.authfoodpatnermidellware,upload.single("video"), foo
 
 // router.get('/', authmidell.authusermidellware,foodController.getallfood);
 router.get('/',  foodController.getallfood);
+router.get('/user/:id', foodController.getFoodsByPartner);
 
 
 

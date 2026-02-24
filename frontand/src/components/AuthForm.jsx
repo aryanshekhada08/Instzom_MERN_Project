@@ -40,8 +40,11 @@ const AuthForm = ({
         withCredentials: true
       });
       if (response.data.user) {
-    localStorage.setItem("userProfile", JSON.stringify(response.data.user));
-}
+        localStorage.setItem("userProfile", JSON.stringify(response.data.user));
+      }
+      if (response.data.foodpatner) {
+        localStorage.setItem("foodPartnerProfile", JSON.stringify(response.data.foodpatner));
+      }
 
       // 2. Success
       alert("Success: " + (response.data.message || "Welcome!"));
@@ -49,7 +52,7 @@ const AuthForm = ({
       // 3. Redirect
       // If it was a Login, go to Home or Dashboard od Partner
       if (!isRegister) {
-         navigate(isPartner ? '/foodpartner/dashboard' : '/');
+         navigate(isPartner ? '/foodpartner/profile' : '/');
       } else {
          // If Register, go to Login page
          navigate(togglePath);
@@ -57,7 +60,7 @@ const AuthForm = ({
 
     } catch (err) {
       // 4. Handle Errors
-      const msg = err.response?.data?.error || "Server Error";
+      const msg = err.response?.data?.message || err.response?.data?.error || "Server Error";
       setError(msg);
       console.error("Auth Error:", err);
     }

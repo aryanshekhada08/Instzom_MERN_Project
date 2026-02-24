@@ -57,7 +57,7 @@ useEffect(() => {
 
             // 👇 4. CRITICAL FIX: Use 'Video' with Capital V (matches your DB)
             videoSrc={reel.Video} 
-            shopId={reel._id}
+            shopId={reel.foodPartnerId}
           
           />
         ))

@@ -37,10 +37,4 @@ app.get('/', (req, res) => {
 app.use('/api/auth', authRoutes); // URLs start with /api/auth/...
 app.use('/api/food', foodRoutes); // URLs start with /api/food/...
 
-// --- START SERVER ---
-const PORT = 3000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
-
-module.exports = app; // You don't need this if you run this file directly
+module.exports = app;

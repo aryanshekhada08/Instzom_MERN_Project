@@ -1,11 +1,28 @@
 const userModel  = require('../models/user.model');
 const foodpatnermodel = require('../models/foodpatner.model');
+const foodModel = require('../models/food.model');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
+async function buildPartnerProfileResponse(partnerDoc) {
+  const totalMeals = await foodModel.countDocuments({ foodPartnerId: partnerDoc._id });
+  const customersServed = Number(partnerDoc.customersServed) || 0;
+
+  return {
+    ...partnerDoc.toObject(),
+    totalMeals,
+    customersServed
+  };
+}
+
 async function registerUser(req, res) {
   try {
-    const { fullName, email, password } = req.body;
+    const { fullName, name, email, password } = req.body;
+    const resolvedFullName = fullName || name;
+
+    if (!resolvedFullName || !email || !password) {
+      return res.status(400).json({ message: 'fullName, email and password are required' });
+    }
 
     // Check if user already exists
     const existingUser = await userModel.findOne({ email });
@@ -18,7 +35,7 @@ async function registerUser(req, res) {
 
     // Create and save new user
     const newUser = new userModel({
-      fullName,
+      fullName: resolvedFullName,
       email,
       password: hashedPassword
     });
@@ -99,6 +116,11 @@ function logoutUser(req, res) {
 async function registerfoodpanter(req, res) {
 
     const {name, email, password, address}= req.body;
+    if (!name || !email || !password) {
+        return res.status(400).json({
+            message: "name, email and password are required"
+        });
+    }
     try{
         const isexist = await foodpatnermodel.findOne({ email });
         if(isexist){
@@ -186,18 +208,38 @@ async function loginfoodpatner(req, res) {
     })
 
  }
- const getProfile = async (req, res) => {
+const getProfile = async (req, res) => {
   try {
-    // req.user.id comes from the cookie/token
-    const user = await foodpatnermodel.findById(req.user.id).select("-password");
+    const partnerId = req.foodpatner?._id || req.foodpartner?._id;
+    if (!partnerId) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    const user = await foodpatnermodel.findById(partnerId).select("-password");
     
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    res.status(200).json(user);
+    const response = await buildPartnerProfileResponse(user);
+    res.status(200).json(response);
   } catch (error) {
     res.status(500).json({ error: "Server Error" });
+  }
+};
+
+const getFoodPartnerById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const partner = await foodpatnermodel.findById(id).select('-password');
+
+    if (!partner) {
+      return res.status(404).json({ message: 'Food partner not found' });
+    }
+
+    const response = await buildPartnerProfileResponse(partner);
+    return res.status(200).json(response);
+  } catch (error) {
+    return res.status(500).json({ message: 'Server Error', error: error.message });
   }
 };
 
@@ -226,5 +268,6 @@ module.exports = {
     loginfoodpatner,
     logoutfoodpatner,
     getProfile,
+    getFoodPartnerById,
     //logout
 };

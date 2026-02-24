@@ -31,7 +31,6 @@ async function authfoodpatnermidellware(req ,res, next){
 }
 const authusermidellware = async (req, res, next) => {
     try {
-        // 1. Get token from Cookies OR Authorization Header
         const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
 
         if (!token) {
@@ -40,22 +39,19 @@ const authusermidellware = async (req, res, next) => {
             });
         }
 
-        // 2. Verify the token
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-        // 3. Find the user using the EXACT key from your login (foodpatnerId)
-        const foodpartner = await foodpatnermodel.findById(decoded.foodpatnerId);
+        const user = await usermodel.findById(decoded.userId);
 
-        if (!foodpartner) {
+        if (!user) {
             return res.status(401).json({ 
                 message: "Unauthorized: User not found" 
             });
         }
 
-        // 4. Attach the user to the request object for use in your controller
-        req.foodpartner = foodpartner;
+        req.user = user;
         
-        next(); // Move to foodController.getallfood
+        next();
         
     } catch (err) {
         console.error("Auth Middleware Error:", err.message);

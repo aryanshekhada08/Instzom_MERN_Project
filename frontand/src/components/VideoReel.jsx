@@ -6,6 +6,7 @@ const VideoReel = ({ videoSrc, shopId, description, shopName }) => {
   const navigate = useNavigate();
 
   const handleVisitStore = () => {
+    if (!shopId) return;
     // Navigate to a dynamic URL using the ID
     navigate(`/profile/${shopId}`); 
   };
@@ -31,7 +32,7 @@ const VideoReel = ({ videoSrc, shopId, description, shopName }) => {
         </p>
 
         {/* 2. Visit Store Button */}
-        <button className="visit-store-btn" onClick={handleVisitStore}>
+        <button className="visit-store-btn" onClick={handleVisitStore} disabled={!shopId}>
            Visit Store &rarr;
         </button>
       </div>
