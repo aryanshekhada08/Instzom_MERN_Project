@@ -50,12 +50,13 @@ const AuthForm = ({
       alert("Success: " + (response.data.message || "Welcome!"));
       
       // 3. Redirect
-      // If it was a Login, go to Home or Dashboard od Partner
-      if (!isRegister) {
-         navigate(isPartner ? '/foodpartner/profile' : '/');
+      // Partner auth (login/register) goes directly to food management page.
+      if (isPartner) {
+        navigate('/create-food');
+      } else if (!isRegister) {
+        navigate('/');
       } else {
-         // If Register, go to Login page
-         navigate(togglePath);
+        navigate(togglePath);
       }
 
     } catch (err) {

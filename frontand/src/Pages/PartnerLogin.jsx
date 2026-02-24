@@ -7,6 +7,7 @@ const PartnerLogin = () => {
       title="Partner Portal"
       subtitle="Login to manage restaurant"
       isRegister={false}
+      isPartner={true}
       togglePath="/foodpartner/register"
       // New Switch Links
       switchPortalPath="/user/login"

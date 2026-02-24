@@ -11,7 +11,10 @@ router.post('/', authmidell.authfoodpatnermidellware,upload.single("video"), foo
 
 // router.get('/', authmidell.authusermidellware,foodController.getallfood);
 router.get('/',  foodController.getallfood);
+router.get('/my', authmidell.authfoodpatnermidellware, foodController.getMyFoods);
 router.get('/user/:id', foodController.getFoodsByPartner);
+router.put('/:id', authmidell.authfoodpatnermidellware, upload.single("video"), foodController.updateFood);
+router.delete('/:id', authmidell.authfoodpatnermidellware, foodController.deleteFood);
 
 
 
