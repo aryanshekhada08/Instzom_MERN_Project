@@ -1,6 +1,11 @@
 const express = require('express');
-const { registerUser,loginUser,getProfile,logoutfoodpatner,registerfoodpanter, loginfoodpatner, getFoodPartnerById} = require('../controllers/auth.controller');
+const { registerUser,loginUser,getProfile,logoutfoodpatner,registerfoodpanter, loginfoodpatner, getFoodPartnerById, updateFoodPartnerProfile} = require('../controllers/auth.controller');
 const { authfoodpatnermidellware } = require('../midellware/auth.midellware');
+const multer = require('multer');
+
+const upload = multer({
+  storage: multer.memoryStorage()
+});
 
 const router = express.Router();
 // User routes
@@ -14,5 +19,6 @@ router.post('/foodpartner/login',loginfoodpatner);
 router.get('/foodpartner/logout',logoutfoodpatner);
 router.get('/foodpartner/:id', getFoodPartnerById);
 router.get('/me', authfoodpatnermidellware, getProfile);
+router.put('/foodpartner/profile', authfoodpatnermidellware, upload.single('profileImage'), updateFoodPartnerProfile);
 
 module.exports = router;

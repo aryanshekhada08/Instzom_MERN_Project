@@ -9,6 +9,7 @@ import PartnerRegister from '../Pages/PartnerRegister'; //
 import Home from '../Pages/Gernal/Home';
 import CreateFoodPatner from '../Pages/food-patner/CreateFoodPatner';
 import Profile from '../Pages/food-patner/Profile';
+import EditFoodPartnerProfile from '../Pages/food-patner/EditFoodPartnerProfile';
 
 // 2. A temporary Home Page so you don't see a blank screen at localhost:5173
 // const Home = () => {
@@ -57,6 +58,7 @@ function AppRoutes() {
         <Route path="/foodpartner/register" element={<PartnerRegister />} />
         <Route path="/create-food" element={<CreateFoodPatner />} />
         <Route path="/foodpartner/profile" element={<Profile />} />
+        <Route path="/foodpartner/profile/edit" element={<EditFoodPartnerProfile />} />
         <Route path="/profile/:id" element={<Profile />} />
       </Routes>
     </Router>

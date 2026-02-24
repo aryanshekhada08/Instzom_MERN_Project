@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'; // 1. Import Hooks
 import axios from 'axios';
 import VideoReel from '../../components/VideoReel';
+import MobileFooter from '../../components/MobileFooter';
 import '../../styles/Reels.css';
 
 const Home = () => {
@@ -41,6 +42,7 @@ useEffect(() => {
 }, []);
 
     return (
+    <>
     <div className="reels-container">
       {realsData.length > 0 ? (
         realsData.map((reel) => (
@@ -68,6 +70,8 @@ useEffect(() => {
         </div>
       )}
     </div>
+    <MobileFooter />
+    </>
   );
 };
 

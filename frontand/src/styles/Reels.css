@@ -5,6 +5,7 @@
   overflow-y: scroll; /* Allow vertical scrolling */
   scroll-snap-type: y mandatory; /* The magic property for snapping */
   background-color: black;
+  padding-bottom: 64px;
 }
 
 /* Hide scrollbar for a clean look */
@@ -39,6 +40,7 @@
   height: 40%; /* Only covers bottom part */
   background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
   padding: 20px;
+  padding-bottom: 84px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end; /* Push content to bottom */

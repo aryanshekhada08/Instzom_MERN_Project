@@ -1,6 +1,8 @@
 const userModel  = require('../models/user.model');
 const foodpatnermodel = require('../models/foodpatner.model');
 const foodModel = require('../models/food.model');
+const storageservice = require('../services/storage.services');
+const { v4: uuid } = require('uuid');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
@@ -243,6 +245,40 @@ const getFoodPartnerById = async (req, res) => {
   }
 };
 
+const updateFoodPartnerProfile = async (req, res) => {
+  try {
+    const partnerId = req.foodpatner?._id;
+    if (!partnerId) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const partner = await foodpatnermodel.findById(partnerId);
+    if (!partner) {
+      return res.status(404).json({ message: 'Food partner not found' });
+    }
+
+    const { name, address, customersServed } = req.body;
+
+    if (name !== undefined) partner.name = name.trim();
+    if (address !== undefined) partner.address = address.trim();
+    if (customersServed !== undefined) partner.customersServed = String(customersServed);
+
+    if (req.file) {
+      const fileuploadresult = await storageservice.uploadfile(req.file.buffer, uuid());
+      partner.profileImage = fileuploadresult.url;
+    }
+
+    await partner.save();
+    const response = await buildPartnerProfileResponse(partner);
+    return res.status(200).json({
+      message: 'Profile updated successfully',
+      foodpatner: response
+    });
+  } catch (error) {
+    return res.status(500).json({ message: 'Server Error', error: error.message });
+  }
+};
+
 
 // const logout = (req, res) => {
 //   try {
@@ -269,5 +305,6 @@ module.exports = {
     logoutfoodpatner,
     getProfile,
     getFoodPartnerById,
+    updateFoodPartnerProfile,
     //logout
 };
