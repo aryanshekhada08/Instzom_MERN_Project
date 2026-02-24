@@ -71,6 +71,18 @@ const Profile = () => {
 
   const closePixel = () => setSelectedVideo(null);
   const getInitials = (name) => (name ? name.charAt(0).toUpperCase() : 'B');
+  const handleLogout = async () => {
+    try {
+      await axios.get('http://localhost:3000/api/auth/foodpartner/logout', {
+        withCredentials: true
+      });
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      localStorage.removeItem('foodPartnerProfile');
+      navigate('/foodpartner/login');
+    }
+  };
 
   return (
     <>
@@ -93,9 +105,14 @@ const Profile = () => {
             </div>
 
             {canEdit && (
-              <button className="edit-profile-btn" onClick={() => navigate('/foodpartner/profile/edit')}>
-                Edit Profile
-              </button>
+              <div className="hero-actions">
+                <button className="edit-profile-btn" onClick={() => navigate('/foodpartner/profile/edit')}>
+                  Edit Profile
+                </button>
+                <button className="logout-btn" onClick={handleLogout}>
+                  Logout
+                </button>
+              </div>
             )}
           </div>
 

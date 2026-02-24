@@ -41,9 +41,11 @@ const AuthForm = ({
       });
       if (response.data.user) {
         localStorage.setItem("userProfile", JSON.stringify(response.data.user));
+        localStorage.removeItem("foodPartnerProfile");
       }
       if (response.data.foodpatner) {
         localStorage.setItem("foodPartnerProfile", JSON.stringify(response.data.foodpatner));
+        localStorage.removeItem("userProfile");
       }
 
       // 2. Success

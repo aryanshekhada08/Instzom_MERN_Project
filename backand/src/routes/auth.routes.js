@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser,loginUser,getProfile,logoutfoodpatner,registerfoodpanter, loginfoodpatner, getFoodPartnerById, updateFoodPartnerProfile} = require('../controllers/auth.controller');
+const { registerUser,loginUser,logoutUser,getProfile,logoutfoodpatner,registerfoodpanter, loginfoodpatner, getFoodPartnerById, updateFoodPartnerProfile} = require('../controllers/auth.controller');
 const { authfoodpatnermidellware } = require('../midellware/auth.midellware');
 const multer = require('multer');
 
@@ -11,6 +11,7 @@ const router = express.Router();
 // User routes
 router.post('/user/register',registerUser);
 router.post('/user/login',loginUser);
+router.get('/user/logout',logoutUser);
 // router.post('/logout', logout);
 
 // food partner routes
