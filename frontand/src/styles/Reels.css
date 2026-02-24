@@ -77,3 +77,21 @@
   width: 100%;
   max-width: 200px;
 }
+
+.reel-actions {
+  width: 100%;
+  display: grid;
+  gap: 8px;
+  max-width: 220px;
+}
+
+.order-btn {
+  background-color: #00a86b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}

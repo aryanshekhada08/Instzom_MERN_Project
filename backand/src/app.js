@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser'); // Fixed typo: 'cookier' -> 'cookie'
 const authRoutes = require('./routes/auth.routes');
 const foodRoutes = require('./routes/food.routes');
+const orderRoutes = require('./routes/order.routes');
 const cors = require('cors');
 
 const app = express();
@@ -36,5 +37,6 @@ app.get('/', (req, res) => {
 // IMPORTANT: These create the base URLs
 app.use('/api/auth', authRoutes); // URLs start with /api/auth/...
 app.use('/api/food', foodRoutes); // URLs start with /api/food/...
+app.use('/api/orders', orderRoutes); // URLs start with /api/orders/...
 
 module.exports = app;

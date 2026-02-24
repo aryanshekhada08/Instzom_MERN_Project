@@ -7,6 +7,7 @@ import '../../styles/Reels.css';
 const Home = () => {
   // 2. Create a "State" to hold the data (starts as empty list)
   const [realsData, setRealsData] = useState([]);
+  const isUser = Boolean(localStorage.getItem('userProfile'));
 
   // 3. Use useEffect to fetch data automatically when page opens
   // src/Pages/Gernal/Home.jsx
@@ -41,6 +42,20 @@ useEffect(() => {
   fetchReels();
 }, []);
 
+  const handleOrder = async (foodId) => {
+    try {
+      await axios.post(
+        'http://localhost:3000/api/orders',
+        { foodId, quantity: 1 },
+        { withCredentials: true }
+      );
+      alert('Order placed successfully');
+    } catch (error) {
+      const msg = error.response?.data?.message || 'Failed to place order';
+      alert(msg);
+    }
+  };
+
     return (
     <>
     <div className="reels-container">
@@ -60,6 +75,9 @@ useEffect(() => {
             // 👇 4. CRITICAL FIX: Use 'Video' with Capital V (matches your DB)
             videoSrc={reel.Video} 
             shopId={reel.foodPartnerId}
+            foodId={reel._id}
+            canOrder={isUser}
+            onOrder={handleOrder}
           
           />
         ))
